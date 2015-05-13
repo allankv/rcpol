@@ -1,0 +1,219 @@
+var mongo = require('mongodb').MongoClient;
+
+function addObject(collection, object){
+  collection.insert(object, function(err, result){
+    if(!err){
+      console.log("Inserted: ");
+      console.log(result);
+    }
+  });
+}
+
+
+// create db and populate
+mongo.connect("mongodb://localhost:27017/polen", function(err, db) {
+  var polen = db.db("polen");
+  polen.dropCollection("collectionItems");
+  polen.dropCollection("collectionStates");
+
+  polen.createCollection("collectionItems", function(err, collection){
+    for (var i in dataset.collectionItems)
+      addObject(collection, dataset.collectionItems[i]);
+  });
+
+  polen.createCollection("collectionStates", function(err, collection){
+    for (var i in dataset.collectionStates)
+      addObject(collection, dataset.collectionStates[i]);
+  });
+
+  setTimeout(function(){
+    db.close();
+  }, 3000);
+});
+
+/* database model (example) */
+var dataset ={
+  collectionItems:
+  [
+              {
+                  item:{
+                      id:1,
+                      label:"Species A",
+                        states:[
+                          {
+                              state:{
+                                  id:1,
+                                  label:"Branco",
+                                    descriptor:{
+                                      id:1,
+                                      label:"Cor"
+                                    }
+                                }
+                            },
+                          {
+                              state:{
+                                  id:2,
+                                  label:"Amarelo",
+                                    descriptor:{
+                                      id:1,
+                                      label:"Cor"
+                                    }
+                                }
+                            },
+                            {
+                              state:{
+                                  id:3,
+                                  label:"Grande",
+                                  descriptor:{
+                                      id:1,
+                                      label:"Tamanho"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+              {
+                  item:{
+                        id:2,
+                    label:"Species B",
+                    states:[
+                        {
+                            state:{
+                                  id:1,
+                                  label:"Branco",
+                                  descriptor:{
+                                      id:1,
+                                      label:"Cor"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+              {
+                  item:{
+                        id:3,
+                      label:"Species C",
+                      states:[
+                          {
+                                state:{
+                                  id:1,
+                                  label:"Branco",
+                                    descriptor:{
+                                      id:1,
+                                      label:"Cor"
+                                    }
+                                }
+                            },
+                          {
+                              state:{
+                                    id:3,
+                                  label:"Grande",
+                                  descriptor:{
+                                        id:2,
+                                      label:"Tamanho"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+              {
+                  item:{
+                        id:4,
+                      label:"Species D",
+                      states:[
+                            {
+                              state:{
+                                  id:2,
+                                    label:"Amarelo",
+                                  descriptor:{
+                                      id:1,
+                                      label:"Cor"
+                                    }
+                                }
+                            },
+                            {
+                              state:{
+                                  id:3,
+                                  label:"Grande",
+                                    descriptor:{
+                                      id:2,
+                                      label:"Tamanho"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],
+
+  collectionStates:
+  [
+              {
+                  state:{
+                        id:1,
+                      label:"Branco",
+                      items:[
+                          {
+                              item:{
+                                    id:1
+                                }
+                            },
+                          {
+                              item:{
+                                  id:2
+                                }
+                            },
+                          {
+                              item:{
+                                  id:3
+                                }
+                            }
+                        ]
+                    }
+                },
+              {
+                  state:{
+                      id:2,
+                      label:"Amarelo",
+                      items:[
+                          {
+                              item:{
+                                  id:1
+                                }
+                            },
+                          {
+                              item:{
+                                  id:4
+                                }
+                            }
+                        ]
+                    }
+                },
+              {
+                  state:{
+                      id:3,
+                        label:"Grande",
+                      items:[
+                          {
+                                item:{
+                                  id:1
+                                }
+                            },
+                          {
+                                item:{
+                                  id:3
+                                }
+                            },
+                          {
+                              item:{
+                                  id:4
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+};
