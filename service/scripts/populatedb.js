@@ -83,15 +83,15 @@ var dataset ={
                       label:"Species A",
                         states:[
                           {
-                              state:{
+                            state:{
+                                id:1,
+                                label:"Branco",
+                                descriptor:{
                                   id:1,
-                                  label:"Branco",
-                                    descriptor:{
-                                      id:1,
-                                      label:"Cor"
-                                    }
+                                  label:"Cor"
                                 }
-                            },
+                            }
+                          },
                           {
                               state:{
                                   id:2,
