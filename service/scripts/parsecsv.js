@@ -97,22 +97,64 @@ function getCollectionItems(codes, columns, taxons, db){
       }
       item.states = states;
 
-      Item.create({item: item}, function(err, item){
+      Item.create({item: item}, function(err, itemObj){
         if (err) console.log(err);
-        console.log('inserted' + item.item.label);
+        console.log('inserted ' + itemObj.item.label);
       });
     }
+    getCollectionStates(db);
   });
 }
 
-/*
-function saveToDb(codes, columns, taxons){
-  mongoose.connect('mongodb://localhost/polen');
-  var db = mongoose.connection;
+function getCollectionStates(db){
+  // drop collection and create new
+  State.remove({}, function(err){
+    console.log('collectionStates removed');
 
-  db.once('open', function(){
-    console.log('connected to ' + Item.db.name);
+    var mapred = {
+      map: function(){
+        var id = this.item.id;
+        this.item.states.forEach(function(stateObj){
+          emit(stateObj.state, id);
+        });
+      },
+      reduce: function(item, states){
+        return {values: states};
+      },
+      out: {inline:1}
+    };
 
+    Item.mapReduce(mapred, function(err, results){
+      if (err) console.log(err);
+      //console.log(JSON.stringify(results, null, 4));
+      results.forEach(function(result){
+        var state = {};
+        state.id = result._id.id; // _id is the first argument of the mapReduce, id is the id of the state
+        state.label = result._id.label;
+        state.descriptor = result._id.descriptor.id;
+        var items = [];
+        if (result.value.values){
+          result.value.values.forEach(function(id){
+            items.push({item: {id: id}});
+          }); // values is the second argument of the mapReduce, and "values" is encapsulating the list of items
+          state.items = items;
+        } else { // in case there is only one item
+          items.push({item: {id: results.value}});
+        }
+
+        State.create({state: state}, function(err, stateObj){
+          if (err) console.log(err);
+          console.log('inserted ' + stateObj.state.label);
+        });
+      });
+      finish(db);
+    });
   });
 }
- */
+
+function finish(db){
+  setTimeout(function(){
+    console.log("closing connection");
+    db.close();
+  }, 5000);
+}
