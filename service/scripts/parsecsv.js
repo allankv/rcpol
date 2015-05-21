@@ -1,3 +1,4 @@
+// TODO descritores com multiplos campos
 var parse = require('csv-parse');
 var fs = require('fs');
 var mongoose = require('mongoose');
@@ -74,7 +75,8 @@ function getCollectionItems(codes, columns, taxons, db){
       item.id = i;  // TODO: id (what if i don't wan't to replace the existing db?)
 
       var especie = columns.indexOf("Espécie"); // get the index of the column "especies"
-      item.label = taxons[i][especie];
+      var autores = columns.indexOf("Autores da espécie");
+      item.label = taxons[i][especie] + " " + taxons[i][autores];
 
       var states = [];
       for (var j in codes){
