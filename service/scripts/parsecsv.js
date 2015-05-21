@@ -1,4 +1,3 @@
-// TODO descritores com multiplos campos
 var parse = require('csv-parse');
 var fs = require('fs');
 var mongoose = require('mongoose');
@@ -64,6 +63,23 @@ function parseFile(data){
   });
 }
 
+function insertstate(states, seenStates, state, id, label){
+  var stateObj = {};
+
+  if (seenStates.indexOf(state) == -1){ // if this is the first time we see this state
+    seenStates.push(state);
+    stateObj.id = seenStates.indexOf(state);
+  } else stateObj.id = seenStates.indexOf(state);
+
+  stateObj.label = state;
+  var descriptor = {};
+  descriptor.id = id;
+  descriptor.label = label;
+  stateObj.descriptor = descriptor;
+
+  states.push({state: stateObj});
+}
+
 function getCollectionItems(codes, columns, taxons, db){
   // drop collection and create new
   Item.remove({}, function(err){
@@ -81,20 +97,15 @@ function getCollectionItems(codes, columns, taxons, db){
       var states = [];
       for (var j in codes){
         if (codes[j] == 'DC'){ // if is a categorical descriptor
-          var state = {};
-
-          if (seenStates.indexOf(taxons[i][j]) == -1){ // if this is the first time we see this state
-            seenStates.push(taxons[i][j]);
-            state.id = seenStates.indexOf(taxons[i][j]);
-          } else state.id = seenStates.indexOf(taxons[i][j]);
-
-          state.label = taxons[i][j];
-          var descriptor = {};
-          descriptor.id = j;
-          descriptor.label = columns[j];
-          state.descriptor = descriptor;
-
-          states.push({state: state});
+          if (taxons[i][j].indexOf(" & ") != -1){ // if the item has multiple states
+            var splittedStates = taxons[i][j].split(" & ");
+            splittedStates.forEach(function(state){
+              insertstate(states, seenStates, state, j, columns[j]);
+            });
+          }
+          else {
+            insertstate(states, seenStates, taxons[i][j], j, columns[j]);
+          }
         }
       }
       item.states = states;
