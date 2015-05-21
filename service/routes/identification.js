@@ -59,11 +59,8 @@ router.get('/identify', function(req, res, next) {
     selectedStates:
     [
       {"state.id": 1},
-      {"state.id": 0},
       {"state.id": 2},
       {"state.id": 3},
-      {"state.id": 4},
-      {"state.id": 5}
     ]
   };
   var eligibleItems = {}; // species that still can be selected
