@@ -10,6 +10,11 @@ var ItemSchema = new Schema({
         state:{
           id: Number,
           label: String,
+          // in case it is a numerical descriptor:
+          mean: Number,
+          dev: Number,
+          max: Number,
+          min: Number,
           descriptor: {
             id: Number,
             label: String
@@ -111,7 +116,21 @@ var dataset ={
                                       label:"Tamanho"
                                     }
                                 }
-                            }
+                            },
+                            {
+                              state:{
+                                id:4,
+                                label:"Medida",
+                                mean: 30.0,
+                                dev: 0.5,
+                                max: 40.0,
+                                min: 20.0,
+                                descriptor:{
+                                  id:2,
+                                  label:"Tamanho do grão"
+                                }
+                              }
+                            },
                         ]
                     }
                 },
@@ -120,18 +139,32 @@ var dataset ={
                         id:2,
                     label:"Species B",
                     states:[
-                        {
-                            state:{
-                                  id:1,
-                                  label:"Branco",
-                                  descriptor:{
-                                      id:1,
-                                      label:"Cor"
-                                    }
-                                }
-                            }
-                        ]
-                    }
+                      {
+                        state:{
+                          id:1,
+                          label:"Branco",
+                          descriptor:{
+                            id:1,
+                            label:"Cor"
+                          }
+                        }
+                      },
+                      {
+                        state:{
+                          id:4,
+                          label:"Medida",
+                          mean: 12.0,
+                          dev: 0.8,
+                          max: 50.0,
+                          min: 10.0,
+                          descriptor:{
+                            id:2,
+                            label:"Tamanho do grão"
+                          }
+                        }
+                      }
+                    ]
+                  }
                 },
               {
                   item:{
@@ -157,7 +190,21 @@ var dataset ={
                                       label:"Tamanho"
                                     }
                                 }
+                          },
+                        {
+                          state:{
+                            id:4,
+                            label:"Medida",
+                            mean: 50.0,
+                            dev: 2.0,
+                            max: 90.0,
+                            min: 10.0,
+                            descriptor:{
+                              id:2,
+                              label:"Tamanho do grão"
                             }
+                          }
+                      }
                         ]
                     }
                 },
@@ -216,7 +263,7 @@ var dataset ={
                             }
                         ]
                     }
-                },
+              },
               {
                   state:{
                     id:2,
@@ -259,6 +306,13 @@ var dataset ={
                             }
                         ]
                     }
-                }
-            ]
+              },
+              {   // Numerical Descriptor
+                  state:{
+                    id:4,
+                    label:"Medida",
+                    descriptor: 3
+                  }
+              }
+  ]
 };
