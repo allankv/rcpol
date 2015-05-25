@@ -13,6 +13,11 @@ var ItemSchema = new Schema({
         state:{
           id: Number,
           label: String,
+          // in case of a numerical descriptor:
+          mean: Number,
+          dev: Number,
+          max: Number,
+          min: Number,
           descriptor: {
             id: Number,
             label: String
@@ -61,6 +66,12 @@ router.get('/identify', function(req, res, next) {
       {"state.id": 1},
       {"state.id": 2},
       {"state.id": 3},
+      {"state.id": 4}
+    ],
+    insertedValues:
+    [
+      // numerical descriptor, check if value is between min and max
+      {"id": 4, value:80 }
     ]
   };
   var eligibleItems = {}; // species that still can be selected
@@ -145,8 +156,15 @@ function getStates(uniqueItems, param, Item, State, res){
   // if no states were selected, get all items
   if (Object.keys(uniqueItems).length == 0)
     var query = uniqueItems;
-  else
+  else {
+    // here we query for numerical descriptors
     query = {'item.id': {$in: uniqueItems}};
+    param.insertedValues.forEach(function(input){
+      query['item.states.state.id']= input.id;
+      query['item.states.state.min']= {$lte: input.value};
+      query['item.states.state.max']= {$gte: input.value};
+    });
+  }
 
   Item.find(query, function (err, eligibleItems){
     if (err) console.log(err);

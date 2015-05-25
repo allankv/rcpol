@@ -126,7 +126,7 @@ var dataset ={
                                 max: 40.0,
                                 min: 20.0,
                                 descriptor:{
-                                  id:2,
+                                  id:3,
                                   label:"Tamanho do grão"
                                 }
                               }
@@ -153,12 +153,12 @@ var dataset ={
                         state:{
                           id:4,
                           label:"Medida",
-                          mean: 12.0,
+                          mean: 45.0,
                           dev: 0.8,
                           max: 50.0,
-                          min: 10.0,
+                          min: 40.0,
                           descriptor:{
-                            id:2,
+                            id:3,
                             label:"Tamanho do grão"
                           }
                         }
@@ -195,12 +195,12 @@ var dataset ={
                           state:{
                             id:4,
                             label:"Medida",
-                            mean: 50.0,
+                            mean: 80.0,
                             dev: 2.0,
                             max: 90.0,
-                            min: 10.0,
+                            min: 70.0,
                             descriptor:{
-                              id:2,
+                              id:3,
                               label:"Tamanho do grão"
                             }
                           }
@@ -210,7 +210,7 @@ var dataset ={
                 },
               {
                   item:{
-                        id:4,
+                      id:4,
                       label:"Species D",
                       states:[
                             {
@@ -311,7 +311,24 @@ var dataset ={
                   state:{
                     id:4,
                     label:"Medida",
-                    descriptor: 3
+                    descriptor: 3,
+                    items: [
+                      {
+                        item:{
+                          id:1
+                        }
+                      },
+                      {
+                        item:{
+                          id:2
+                        }
+                      },
+                      {
+                        item:{
+                          id:3
+                        }
+                      }
+                    ]
                   }
               }
   ]
