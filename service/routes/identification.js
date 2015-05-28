@@ -63,15 +63,12 @@ router.get('/identify', function(req, res, next) {
   var param = {
     selectedStates:
     [
-      {"state.id": 1},
-      {"state.id": 2},
-      {"state.id": 3},
-      {"state.id": 4}
+      {"state.id": 5}
     ],
     insertedValues:
     [
       // numerical descriptor, check if value is between min and max
-      {"id": 4, value:80 }
+      {"id": 5, "value":30 }
     ]
   };
   var eligibleItems = {}; // species that still can be selected
@@ -161,11 +158,13 @@ function getStates(uniqueItems, param, Item, State, res){
     query = {'item.id': {$in: uniqueItems}};
     param.insertedValues.forEach(function(input){
       query['item.states.state.id']= input.id;
-      query['item.states.state.min']= {$lte: input.value};
-      query['item.states.state.max']= {$gte: input.value};
+      query['$and'] =  [
+        {'item.states.state.min': {$lte: input.value}},
+        {'item.states.state.max': {$gte: input.value}}
+      ];
     });
   }
-
+  console.log(JSON.stringify(query,null, 4));
   Item.find(query, function (err, eligibleItems){
     if (err) console.log(err);
 

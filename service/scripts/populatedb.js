@@ -120,7 +120,6 @@ var dataset ={
                             {
                               state:{
                                 id:4,
-                                label:"Medida",
                                 mean: 30.0,
                                 dev: 0.5,
                                 max: 40.0,
@@ -152,7 +151,6 @@ var dataset ={
                       {
                         state:{
                           id:4,
-                          label:"Medida",
                           mean: 45.0,
                           dev: 0.8,
                           max: 50.0,
@@ -194,7 +192,6 @@ var dataset ={
                         {
                           state:{
                             id:4,
-                            label:"Medida",
                             mean: 80.0,
                             dev: 2.0,
                             max: 90.0,
@@ -310,7 +307,6 @@ var dataset ={
               {   // Numerical Descriptor
                   state:{
                     id:4,
-                    label:"Medida",
                     descriptor: 3,
                     items: [
                       {
